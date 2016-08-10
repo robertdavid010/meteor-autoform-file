@@ -50,10 +50,13 @@ Template.afFileUpload.onRendered ->
   self = @
   $(self.firstNode).closest('form').on 'reset', ->
     self.value.set false
+    console.log "we rendered the afFileUplaod template"
 
 Template.afFileUpload.helpers
   label: ->
-    @atts.label or 'Choose file'
+    console.log "we are in the afFileUpload helpers"
+    console.log @atts
+    @atts.label or 'EXO-Choose file'
   removeLabel: ->
     @atts.removeLabel or 'Remove'
   value: ->
@@ -96,6 +99,12 @@ Template.afFileUpload.events
   'click .js-af-remove-file': (e, t) ->
     e.preventDefault()
     t.value.set false
+
+  'click .js-af-select-file': (e, t) ->
+    e.preventDefault()
+    console.log "we clicked the upload button"
+    console.log e.currentTarget
+    $(e.currentTarget).next('.js-file').trigger('click')
 
   'fileuploadchange .js-file': (e, t, data) ->
     t._insert new FS.File data.files[0]
