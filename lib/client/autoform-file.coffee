@@ -50,12 +50,9 @@ Template.afFileUpload.onRendered ->
   self = @
   $(self.firstNode).closest('form').on 'reset', ->
     self.value.set false
-    console.log "we rendered the afFileUplaod template"
 
 Template.afFileUpload.helpers
   label: ->
-    console.log "we are in the afFileUpload helpers"
-    console.log @atts
     @atts.label or 'EXO-Choose file'
   removeLabel: ->
     @atts.removeLabel or 'Remove'
@@ -65,7 +62,7 @@ Template.afFileUpload.helpers
   schemaKey: ->
     @atts['data-schema-key']
   previewTemplate: ->
-    @atts?.previewTemplate or if getDocument(@)?.isImage() then 'afFileUploadThumbImg' else 'afFileUploadThumbIcon'
+    @atts?.previewTemplate or if getDocument(@)?.isImage() and @value then 'afFileUploadThumbImg' else 'afFileUploadThumbIcon'
   previewTemplateData: ->
     file: getDocument @
     atts: @atts
@@ -96,15 +93,14 @@ Template.afFileUpload.events
     e.preventDefault()
     t._insert new FS.File e.originalEvent.dataTransfer.files[0]
 
+  'click .js-af-select-file': (e, t) ->
+    e.stopPropagation()
+    e.preventDefault()
+    $(e.currentTarget).siblings('.js-file').trigger('click')
+
   'click .js-af-remove-file': (e, t) ->
     e.preventDefault()
     t.value.set false
-
-  'click .js-af-select-file': (e, t) ->
-    e.preventDefault()
-    console.log "we clicked the upload button"
-    console.log e.currentTarget
-    $(e.currentTarget).next('.js-file').trigger('click')
 
   'fileuploadchange .js-file': (e, t, data) ->
     t._insert new FS.File data.files[0]
