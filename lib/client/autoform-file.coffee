@@ -47,6 +47,7 @@ Template.afFileUpload.onCreated ->
     _id and Meteor.subscribe 'autoformFileDoc', self.data.atts.collection, _id
 
 Template.afFileUpload.onRendered ->
+  @$('.js-file').fileupload()
   self = @
   $(self.firstNode).closest('form').on 'reset', ->
     self.value.set false
@@ -104,9 +105,9 @@ Template.afFileUpload.events
     e.preventDefault()
     t.value.set false
 
-  'fileuploadchange .js-file': (e, t, data) ->
-    # console.log("file upload changed inside afFile.coffee")
-    # console.log(t)
+  'fileuploaddone .js-file': (e, t, data) ->
+    console.log("file upload changed inside afFile.coffee")
+    console.log(t)
     # here we can handle the choice between...
     t._insert new FS.File data.files[0]
 
@@ -128,5 +129,3 @@ Template.afFileUploadThumbIcon.helpers
       else
         'file-o'
 
-Template.afFileSelectFileBtnTemplate.onRendered ->
-  @$('.js-file').fileupload()
