@@ -1,6 +1,8 @@
 <template name="afFileUpload">
   <div>
     {{#if file}}
+    {{consoleLog 'inside afFileUplaod helper in autoform-file.html'}}
+    {{consoleLog file}}
       {{#if file.isUploaded}}
         {{> Template.dynamic template=previewTemplate data=previewTemplateData}}
         {{> Template.dynamic template=removeFileBtnTemplate data=removeLabel}}

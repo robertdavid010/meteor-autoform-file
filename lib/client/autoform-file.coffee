@@ -62,7 +62,7 @@ Template.afFileUpload.helpers
   schemaKey: ->
     @atts['data-schema-key']
   previewTemplate: ->
-    @atts?.previewTemplate or if getDocument(@)?.isImage() and @value then 'afFileUploadThumbImg' else 'afFileUploadThumbIcon'
+    @atts?.previewTemplate or if getDocument(@)?.isImage() then 'afFileUploadThumbImg' else 'afFileUploadThumbIcon'
   previewTemplateData: ->
     file: getDocument @
     atts: @atts
@@ -75,7 +75,7 @@ Template.afFileUpload.helpers
     @atts?.selectFileBtnTemplate or 'afFileSelectFileBtnTemplate'
   selectFileBtnData: ->
     label: @atts.label or 'Choose file'
-    accepts: @atts.accepts
+    accept: @atts.accept
   uploadProgressTemplate: ->
     @atts?.uploadProgressTemplate or 'afFileUploadProgress'
 
@@ -96,6 +96,8 @@ Template.afFileUpload.events
   'click .js-af-select-file': (e, t) ->
     e.stopPropagation()
     e.preventDefault()
+    # console.log("Clicked select file inside afFile.coffee")
+    # console.log(t)
     $(e.currentTarget).siblings('.js-file').trigger('click')
 
   'click .js-af-remove-file': (e, t) ->
@@ -103,6 +105,9 @@ Template.afFileUpload.events
     t.value.set false
 
   'fileuploadchange .js-file': (e, t, data) ->
+    # console.log("file upload changed inside afFile.coffee")
+    # console.log(t)
+    # here we can handle the choice between...
     t._insert new FS.File data.files[0]
 
 Template.afFileUploadThumbImg.helpers
